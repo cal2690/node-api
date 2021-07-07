@@ -10,7 +10,7 @@ class Server {
         this.userPath = '/api/user';
 
         // DATABASES
-        this.database();
+        //this.database();
 
 
         // MIDDLEWARES
@@ -18,10 +18,6 @@ class Server {
 
         //ROUTES
         this.routes();
-    }
-
-    async database() {
-        await dbConnection();
     }
 
     middlewares() {

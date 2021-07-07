@@ -1,20 +1,16 @@
 const mysql = require('mysql');
 
-const dbConnection = async() => {
-    try {
-        var con = await mysql.createConnection({
-            user: process.env.USER,
-            password: process.env.PASS,
-        }).connect();
+const dbConnection = mysql.createConnection({
+    host: process.env.HOST,
+    user: process.env.USER,
+    password: process.env.PASS,
+    database: process.env.DATABASE,
+});
 
-        console.log('Base de datos Online');
-
-    } catch (error) {
-        console.log(error);
-        throw new Error('Error a la hora de iniciar la base de datos');
-    }
-
-}
+dbConnection.connect(function(err) {
+    if (err) return console.log(err);
+    console.log('Database Online');
+});
 
 module.exports = {
     dbConnection,

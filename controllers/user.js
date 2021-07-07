@@ -1,4 +1,5 @@
 const { response, request } = require('express');
+const { dbConnection } = require('../database/config');
 
 const usersGet = (req = request, res = response) => {
     const { q, name = 'No name', apikey, page = 1, limit } = req.query;
@@ -13,11 +14,21 @@ const usersGet = (req = request, res = response) => {
 }
 
 const userPost = (req, res = response) => {
-    const { name, age } = req.body;
-    res.status(200).json({
-        msg: "post API userPost",
-        name,
-        age,
+    const { name, lastname, email, password, image, role } = req.body;
+    const query = 'CALL SP_User_Create(?, ?, ?, ?, ?, ?)';
+    dbConnection.query(query, [name, lastname, email, password, image, role], (err, rows, fields) => {
+        if (!err) {
+            let result = rows[0][0];
+            res.status(200).json({
+                ok: result.ok,
+                err: result.err,
+                template: result.template,
+            })
+        } else {
+            res.status(500).json({
+                msg: err
+            })
+        }
     });
 }
 
